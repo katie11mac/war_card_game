@@ -14,35 +14,39 @@ import javax.swing.SwingConstants;
 
 public class GUIApplication {
 
+	//-------GUI OBJECTS------
 	private JFrame frame;
 	private JButton drawButton; 
 	private JButton quitButton; 
 	private JButton restartButton; 
-	private JLabel statusLabel; 
-	
-	
-	public static Card card1 = new Card("9", "spades"); 
-	public static Card card2 = new Card("ace", "clubs"); 
-	public static Card card3 = new Card("King", "diamonds"); 
-	public static Card card4 = new Card("9", "hearts"); 
-	
-	public static DeckOfCards deck;
+	private JLabel updateLabel; 
+	private JLabel resultsLabel; 
 
+	//---------TESTING----------
+//	public static Card card1 = new Card("9", "spades"); 
+//	public static Card card2 = new Card("ace", "clubs"); 
+//	public static Card card3 = new Card("King", "diamonds"); 
+//	public static Card card4 = new Card("9", "hearts"); 
+//	public static DeckOfCards deck;
+	//--------------------------
 	
-	//public static DeckOfCards deck = new DeckOfCards();
-	
-	
-	
+	//-----BACKEND OBJECTS------
+	public static DeckOfCards deck;
 	public static Queue<Card> computerPile; 
 	public static Queue<Card> playerPile; 
-	
+
+	//-------WAR VARIABLES------
+	// Used to help navigate war
+	public static boolean war; 
+	ArrayList<Card> prize = new ArrayList<Card>(); 
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		
 		initializeGame(); 
-		System.out.println("GAME INITALIZED"); // DEBUGGING
+		System.out.println("GAME INITALIZED"); 
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -55,14 +59,19 @@ public class GUIApplication {
 			}
 		});
 		
-		
-		
-		
 	}
 
 	
+	/*
+	 * Set the game up for war (eg. shuffle and split the deck into two piles).
+	 * 
+	 */
 	public static void initializeGame() {
-		deck = new DeckOfCards(new ArrayList<>(Arrays.asList(card1, card2, card3, card4))); 
+		//TESTING----
+		//deck = new DeckOfCards(new ArrayList<>(Arrays.asList(card1, card2, card3, card4))); 
+		//----------
+		deck = new DeckOfCards(); 
+		war = false; 
 		deck.shuffle();
 		System.out.println(deck); 
 		System.out.println("***DECK HAS BEEN SHUFFLED***"); 
@@ -74,79 +83,116 @@ public class GUIApplication {
 		
 	}
 	
-	// returns true if the player has won 
-	public boolean roundResults(Card computerCard, Card playerCard) {
+	/*
+	 * Compare the two cards drawn and communicate the results with the player. 
+	 * 
+	 * @param computerCard - Card object drawn from the top of the computer's pile 
+	 * @param playerCard - Card object drawn from the top of the computer's pile 
+	 */
+	public void roundResults(Card computerCard, Card playerCard) {
+		
+		updateLabel.setText("ROUND RESULTS");
 		int compareResults = (computerCard.compareTo(playerCard)); 
 		
 		String results = "<html> Computer: " + computerCard + " <br/> You: " + playerCard + "<br/>"; 
 		
-		if (compareResults == -1) { // computer has less card than player 
+		if (compareResults == -1) { // Computer drew card lower than Player 
 			playerPile.add(computerCard); 
 			playerPile.add(playerCard); 
-			statusLabel.setText(results + "You won this round! </html>");
-			return true; 
-		} else if (compareResults == 1) {
+			resultsLabel.setText(results + "You won this round! </html>");
+			war = false; 
+		} else if (compareResults == 1) { // Computer drew card higher than Player 
 			computerPile.add(computerCard); 
 			computerPile.add(playerCard); 
-			statusLabel.setText(results + "You lost this round! </html>");
-			return false; 
-		} else { 
-			// NEED TO CODE THIS WAR LATER 
-			statusLabel.setText(results + "WAAARRR! </html>");
-			return false; 
+			resultsLabel.setText(results + "You lost this round! </html>");
+			war = false; 
+		} else { // Both players drew cards of the same rank 
+			prize.add(computerCard); 
+			prize.add(playerCard); 
+			resultsLabel.setText(results + "WAAARRR! </html>");
+			war = true; 
 		}
+		
 	}
 	
 	
-	// NEED TO GO OVER THIS
-	public static boolean war(Queue<Card> computerPile, Queue<Card> playerPile, ArrayList<Card> prize) {
+	/*
+	 * Game of War 
+	 * 
+	 * "If the cards are the same rank, it is War. 
+	 * Each player turns up one card face down and one card face up. 
+	 * The player with the higher cards takes both piles (six cards). 
+	 * If the turned-up cards are again the same rank, each player places 
+	 * another card face down and turns another card face up. 
+	 * The player with the higher card takes all 10 cards, and so on." 
+	 * 
+	 * via https://bicyclecards.com/how-to-play/war/ 
+	 * 
+	 * @param computerPile - computer's pile of cards 
+	 * @param playerPile - player's pile of cards 
+	 * @param prize - ArrayList<Cards> that hold all the cards the winner of war would get 
+	 */
+	public void war(Queue<Card> computerPile, Queue<Card> playerPile, ArrayList<Card> prize) {
 		
+		updateLabel.setText("***WAR***");
 		System.out.println();
+		System.out.println("***WAR***"); 
+		
+		// Not enough cards in each pile to play war 
 		if ((computerPile.size() < 2) || (playerPile.size() < 2)) {
 			System.out.println("There were not enough cards to play war. But here are the results..."); 
-			if (computerPile.size() > playerPile.size() ) {
-				System.out.println("COMPUTER HAS WON THE GAME!!!"); 
-			} else if (computerPile.size() < playerPile.size() ){
-				System.out.println("YOU HAVE WON THE GAME!!!");
+			updateLabel.setText("There were not enough cards to play war. But here are the results..."); 
+			finalResults(); 
+		} else {
+			
+			// Extra cards that have to be given up
+			prize.add(computerPile.remove()); 
+			prize.add(playerPile.remove()); 
+			
+			System.out.println("Each player has thrown their cards for war..."); 
+			
+			// Cards that will be compared 
+			Card computerCard = computerPile.remove(); 
+			Card playerCard = playerPile.remove(); 
+			
+			// Analyzing results 
+			String results = "<html> Computer: " + computerCard + " <br/> You: " + playerCard + "<br/>";
+			
+			int compareResults = (computerCard.compareTo(playerCard)); 
+			
+			prize.add(computerCard); 
+			prize.add(playerCard); 
+			
+			System.out.print("Results: "); 
+			
+			System.out.println(prize); 
+			
+			if (compareResults == -1) { // computer has less card than player 
+				playerPile.addAll(prize); 
+				results += "YOU WON THE WAR AND GET ALL THE CARDS DRAWN"; 
+				prize.clear();
+				war = false; 
+			} else if (compareResults == 1) {
+				computerPile.addAll(prize); 
+				results += "COMPUTER WON THE WAR AND GETS ALL THE CARDS DRAWN"; 
+				prize.clear();
+				war = false; 
+			} else { // war 
+				results += "WAR ... AGAIN";
+				war = true; 
 			}
-			deck.addToDeck(prize);
-			return false; 
+			
+			resultsLabel.setText(results);
+			
 		}
 		
-		System.out.println("***WAR***");
-		prize.add(computerPile.remove()); 
-		prize.add(playerPile.remove()); 
-		
-		System.out.println("Each player has thrown their cards for war..."); 
-		
-		
-		Card computerCard = computerPile.remove(); 
-		Card playerCard = playerPile.remove(); 
-		
-		System.out.println("COMPUTER CARD: " + computerCard); 
-		System.out.println("PLAYER CARD: " + playerCard);
-		
-		int compareResults = (computerCard.compareTo(playerCard)); 
-		
-		prize.add(computerCard); 
-		prize.add(playerCard); 
-		
-		System.out.print("Results: "); 
-		
-		if (compareResults == -1) { // computer has less card than player 
-			playerPile.addAll(prize); 
-			System.out.println("YOU WON THE WAR AND GET ALL THE CARDS DRAWN"); 
-		} else if (compareResults == 1) {
-			computerPile.addAll(prize); 
-			System.out.println("COMPUTER WON THE WAR AND GETS ALL THE CARDS DRAWN"); 
-		} else { // war 
-			System.out.println("*!!!WAR ... AGAIN!!!*");
-			war(computerPile, playerPile, prize); 
-		}
-		
-		return true; 
 	}
 	
+	/*
+	 * Compare the size of the computer's and player's pile.
+	 * Communicate the results with the user. The bigger pile wins. 
+	 * 
+	 */
 	public void finalResults() {
 		String results = "<html>"; 
 		
@@ -165,7 +211,7 @@ public class GUIApplication {
 			results += ("<br/> It was a tie!</html>"); 
 		}
 	
-		statusLabel.setText(results);
+		resultsLabel.setText(results);
 	}
 	
 	/**
@@ -188,12 +234,18 @@ public class GUIApplication {
 		
 		
 		
-		// -------RESET BUTTON-----------
+		// ---------RESTART BUTTON-----------
 		restartButton = new JButton("Restart Game");
 		restartButton.addActionListener(new ActionListener() {
+			/*
+			 * Restart the game. 
+			 */
 			public void actionPerformed(ActionEvent e) {
-				statusLabel.setText("The game has been reset. Press Draw Card to being.");
+	
+				updateLabel.setText("The game has been reset. Press Draw Card to being.");
+				resultsLabel.setText(""); 
 				initializeGame(); 
+				
 			}
 		});
 		restartButton.setBounds(165, 243, 117, 29);
@@ -204,7 +256,11 @@ public class GUIApplication {
 		// ----------QUIT BUTTON---------
 		quitButton = new JButton("Quit");
 		quitButton.addActionListener(new ActionListener() {
+			/*
+			 * Quit the game currently being played and see the current results. 
+			 */
 			public void actionPerformed(ActionEvent e) {
+				updateLabel.setText("You quit the game. Please press Restart Game to play again. ");
 				finalResults(); 
 			}
 		});
@@ -217,16 +273,27 @@ public class GUIApplication {
 		// ----------DRAW BUTTON---------
 		drawButton = new JButton("Draw Card");
 		drawButton.addActionListener(new ActionListener() {
+			/*
+			 * Draw another card from each player's pile. 
+			 */
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("DRAW BUTTON PRESSED"); // DEBUGGING
+				updateLabel.setText("");
+				
+				System.out.println("DRAW BUTTON PRESSED"); 
 				System.out.print("Computer: " + computerPile.size()); 
-				System.out.println("Player: " + playerPile.size()); 
-				if ((computerPile.size() > 0) && (playerPile.size() > 0)) {
+				System.out.println(" Player: " + playerPile.size());
+				
+				
+				if ((computerPile.size() > 0) && (playerPile.size() > 0) && war == false) {
+					// Regular round 
 					Card computerCard = computerPile.remove(); 
 					Card playerCard = playerPile.remove(); 
 					roundResults(computerCard, playerCard); 
+				} else if ((computerPile.size() > 0) && (playerPile.size() > 0) && war == true) {
+					// Round for war
+					war(computerPile, playerPile, prize); 
 				} else { 
-				
+					// Not enough cards to play anymore 
 					finalResults(); 
 				}
 			}
@@ -235,13 +302,18 @@ public class GUIApplication {
 		frame.getContentPane().add(drawButton);
 		
 		
+		// ------- UPDATE LABEL ---------
+		updateLabel = new JLabel("");
+		updateLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		updateLabel.setBounds(6, 54, 438, 25);
+		frame.getContentPane().add(updateLabel);
+
 		
-		
-		// ------- GAME STATUS LABEL -------
-		statusLabel = new JLabel("Game Status", SwingConstants.CENTER);
-		statusLabel.setBounds(6, 47, 438, 184);
-		frame.getContentPane().add(statusLabel);
-		
+		// ------- RESULTS LABEL -------
+		resultsLabel = new JLabel("Game Status", SwingConstants.CENTER);
+		resultsLabel.setBounds(6, 91, 438, 140);
+		frame.getContentPane().add(resultsLabel);
+				
 		
 	}
 }
