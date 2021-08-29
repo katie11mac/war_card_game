@@ -1,12 +1,15 @@
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 public class DeckOfCards extends ArrayList<Card>{
 
 	
 	private ArrayList<Card> deck; // Size may change 
-	
+	private Image backOfDeck; 
 	
 	//------------------------------------CONSTRUCTORS-----------------------------------------
 	/*
@@ -25,6 +28,7 @@ public class DeckOfCards extends ArrayList<Card>{
 	public DeckOfCards() {
 		String[] faceNames = Card.getValidFaceNames(); // static method (do not need an instance of a Card) 
 		String[] suits = Card.getValidSuits(); 
+		setBackOfDeck(new ImageIcon(this.getClass().getResource("/backOfCard.png" )).getImage()); 
 		
 		deck = new ArrayList<>(); 
 		
@@ -47,8 +51,12 @@ public class DeckOfCards extends ArrayList<Card>{
 		this.deck = deck; 
 	}
 	
-	
-	
+
+	public void setBackOfDeck(Image backOfDeck) {
+		this.backOfDeck = backOfDeck;
+	}
+
+
 	//---------------------------------------GETTERS-------------------------------------------
 	/*
 	 * Return deck of Card objects 
@@ -59,7 +67,10 @@ public class DeckOfCards extends ArrayList<Card>{
 		return this.deck; 
 	}
 	
-	
+	public Image getBackOfDeck() {
+		return backOfDeck;
+	}
+
 	
 	// ------ IMPLEMENT SORTING METHODS HERE? ------ 
 	

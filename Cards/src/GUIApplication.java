@@ -1,6 +1,8 @@
 import java.awt.EventQueue;
+import java.awt.Image;
 
 import javax.swing.JFrame;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,7 +23,9 @@ public class GUIApplication {
 	private JButton restartButton; 
 	private JLabel updateLabel; 
 	private JLabel resultsLabel; 
-
+	private JLabel playerCardImg; 
+	private JLabel computerCardImg;
+	
 	//---------TESTING----------
 //	public static Card card1 = new Card("9", "spades"); 
 //	public static Card card2 = new Card("ace", "clubs"); 
@@ -39,6 +43,7 @@ public class GUIApplication {
 	// Used to help navigate war
 	public static boolean war; 
 	ArrayList<Card> prize = new ArrayList<Card>(); 
+	
 
 	/**
 	 * Launch the application.
@@ -90,6 +95,9 @@ public class GUIApplication {
 	 * @param playerCard - Card object drawn from the top of the computer's pile 
 	 */
 	public void roundResults(Card computerCard, Card playerCard) {
+		
+		computerCardImg.setIcon(new ImageIcon(computerCard.getImage().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
+		playerCardImg.setIcon(new ImageIcon(playerCard.getImage().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
 		
 		updateLabel.setText("ROUND RESULTS");
 		int compareResults = (computerCard.compareTo(playerCard)); 
@@ -153,10 +161,14 @@ public class GUIApplication {
 			
 			// Cards that will be compared 
 			Card computerCard = computerPile.remove(); 
+			computerCardImg.setIcon(new ImageIcon(computerCard.getImage().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
+			
 			Card playerCard = playerPile.remove(); 
+			playerCardImg.setIcon(new ImageIcon(playerCard.getImage().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
+
 			
 			// Analyzing results 
-			String results = "<html> Computer: " + computerCard + " <br/> You: " + playerCard + "<br/>";
+			String results = "<html> Each player has turned one card face down. <br/> Computer: " + computerCard + " <br/> You: " + playerCard + "<br/>";
 			
 			int compareResults = (computerCard.compareTo(playerCard)); 
 			
@@ -194,6 +206,7 @@ public class GUIApplication {
 	 * 
 	 */
 	public void finalResults() {
+		showBackOfDeck(); 
 		String results = "<html>"; 
 		
 		if(playerPile.size() == 0 || computerPile.size() == 0) {
@@ -212,6 +225,11 @@ public class GUIApplication {
 		}
 	
 		resultsLabel.setText(results);
+	}
+	
+	public void showBackOfDeck() {
+		computerCardImg.setIcon(new ImageIcon(deck.getBackOfDeck().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
+		playerCardImg.setIcon(new ImageIcon(deck.getBackOfDeck().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
 	}
 	
 	/**
@@ -248,7 +266,7 @@ public class GUIApplication {
 				
 			}
 		});
-		restartButton.setBounds(252, 328, 117, 29);
+		restartButton.setBounds(243, 328, 117, 29);
 		frame.getContentPane().add(restartButton);
 		
 		
@@ -260,6 +278,7 @@ public class GUIApplication {
 			 * Quit the game currently being played and see the current results. 
 			 */
 			public void actionPerformed(ActionEvent e) {
+				showBackOfDeck(); 
 				updateLabel.setText("You quit the game.");
 				resultsLabel.setText("<html> Press Draw Card to continue game. <br/> Or press Restart Game to play a new game. </html>");
 			}
@@ -310,9 +329,18 @@ public class GUIApplication {
 
 		
 		// ------- RESULTS LABEL -------
-		resultsLabel = new JLabel("Game Status", SwingConstants.CENTER);
-		resultsLabel.setBounds(160, 108, 304, 174);
+		resultsLabel = new JLabel("", SwingConstants.CENTER);
+		resultsLabel.setBounds(149, 108, 304, 174);
 		frame.getContentPane().add(resultsLabel);
+		
+		// IMAGE 
+		playerCardImg = new JLabel("Your Cards");
+		playerCardImg.setBounds(482, 108, 117, 174);
+		frame.getContentPane().add(playerCardImg);
+		
+		computerCardImg = new JLabel("Computer's Cards");
+		computerCardImg.setBounds(6, 108, 117, 174);
+		frame.getContentPane().add(computerCardImg);
 				
 		
 	}
