@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 public class Card implements Comparable<Card>{
 
 	
@@ -32,7 +34,8 @@ public class Card implements Comparable<Card>{
 		setFaceName(faceName); 
 		setSuit(suit); 
 		setRanking(); 
-		//need to add image 
+		String fileName = faceName.toLowerCase() + "_of_" + suit.toLowerCase() + ".png"; 
+		image = new ImageIcon(this.getClass().getResource("/" + fileName)).getImage(); 
 	}
 	
 	
