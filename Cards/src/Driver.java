@@ -4,6 +4,14 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
+
+/**
+ * Game of war through the console. 
+ * 
+ * @author kmacalintal
+ *
+ */
+
 public class Driver {
 	
 	public static DeckOfCards deck = new DeckOfCards(); 

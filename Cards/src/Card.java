@@ -9,14 +9,16 @@ import javax.swing.ImageIcon;
 public class Card implements Comparable<Card>{
 
 	
+	
 	private String faceName; 
 	private String suit; 
 	private int ranking; 
 	private Image image; 
 	
 	
+	
 	//------------------------------------CONSTRUCTORS-----------------------------------------
-	/*
+	/**
 	 * Create a new Card object. 
 	 */
 	public Card() {
@@ -24,7 +26,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Create a new Card object with specified values. 
 	 * 
 	 * @param faceName - face of card 
@@ -41,7 +43,7 @@ public class Card implements Comparable<Card>{
 	
 	
 	//---------------------------------------GETTERS-------------------------------------------
-	/*
+	/**
 	 * Get face of Card object 
 	 * 
 	 * @return String - face name of Card
@@ -51,7 +53,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Get suit of Card object 
 	 * 
 	 * @return String - suit name of Card
@@ -61,7 +63,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Get ranking of Card object 
 	 * 
 	 * @return int - rank of Card (higher the value the higher the rank) 
@@ -71,10 +73,10 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Get Image of Card object 
 	 * 
-	 * @return Image - Image of Card 
+	 * @return Image - Image of Card with corresponding face and rank
 	 */
 	public Image getImage() {
 		return image;
@@ -82,9 +84,8 @@ public class Card implements Comparable<Card>{
 
 
 
-
 	//---------------------------------------SETTERS-------------------------------------------
-	/*
+	/**
 	 * If the entry is valid, set the face of the Card object 
 	 * 
 	 * @param faceName - face name of Card
@@ -99,7 +100,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 
-	/*
+	/**
 	 * If the entry is valid, set the suit of the Card object 
 	 * 
 	 * @param suit - suit of Card
@@ -114,7 +115,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Set the ranking of the a Card object, given that it has a valid face value 
 	 */
 	private void setRanking() {
@@ -132,17 +133,19 @@ public class Card implements Comparable<Card>{
 			throw new IllegalArgumentException("Card is invalid because it does not have a ranking."); 
 	}
 	
-	/*
-	 * Set the Image of the a Card object. 
+	/**
+	 * Set the Image of the a Card object
 	 * 
-	 * @param image - Image object for Card
+	 * @param image - Image object for Card with corresponding face and rank 
 	 */
 	public void setImage(Image image) {
 		this.image = image;
 	}
 	
+	
+	
 	//------------------------------------OTHER METHODS-----------------------------------------
-	/*
+	/**
 	 * Return the valid entries for a face name of a Card object 
 	 * 
 	 * @return String[] - array of all the valid entries for face name 
@@ -153,7 +156,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Return the valid entries for a suit of a Card object 
 	 * 
 	 * @return String[] - array of all the valid entries for a suit
@@ -164,7 +167,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Check the validity of an entry value for the Card object 
 	 * 
 	 * @param validEntries - Array of Strings that are valid entries or valid  
@@ -182,7 +185,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Compares two Card objects. 
 	 * 
 	 * @param other 
@@ -201,7 +204,7 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Return information of the Card object in a clean format 
 	 * 
 	 * @return String - faceName and suit of Card object 

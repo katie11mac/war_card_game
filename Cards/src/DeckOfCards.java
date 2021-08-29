@@ -8,11 +8,14 @@ import javax.swing.ImageIcon;
 public class DeckOfCards extends ArrayList<Card>{
 
 	
+	
 	private ArrayList<Card> deck; // Size may change 
 	private Image backOfDeck; 
 	
+	
+	
 	//------------------------------------CONSTRUCTORS-----------------------------------------
-	/*
+	/**
 	 * Pass in a collection of Card objects (eg. specialized deck of cards) 
 	 * 
 	 * @param deck - Made deck of Card objects 
@@ -22,7 +25,7 @@ public class DeckOfCards extends ArrayList<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Build a full deck of regular cards.
 	 */
 	public DeckOfCards() {
@@ -42,7 +45,7 @@ public class DeckOfCards extends ArrayList<Card>{
 	
 	
 	//---------------------------------------SETTERS-------------------------------------------
-	/*
+	/**
 	 * Set the deck to an already made deckOfCards
 	 * 
 	 * @param deck - collection of Card objects 
@@ -52,13 +55,19 @@ public class DeckOfCards extends ArrayList<Card>{
 	}
 	
 
+	/**
+	 * Set the image on the back of the DeckOfCards
+	 * 
+	 * @param backOfDeck - Image for the back of the DeckOfCards 
+	 */
 	public void setBackOfDeck(Image backOfDeck) {
 		this.backOfDeck = backOfDeck;
 	}
 
+	
 
 	//---------------------------------------GETTERS-------------------------------------------
-	/*
+	/**
 	 * Return deck of Card objects 
 	 * 
 	 * @return ArrayList<Card> - This collection of cards 
@@ -67,17 +76,24 @@ public class DeckOfCards extends ArrayList<Card>{
 		return this.deck; 
 	}
 	
+	
+	/**
+	 * Return back of deck Image
+	 * 
+	 * @return Image - Current backOfDeck Image
+	 */
 	public Image getBackOfDeck() {
 		return backOfDeck;
 	}
 
+	
 	
 	// ------ IMPLEMENT SORTING METHODS HERE? ------ 
 	
 	
 	
 	//------------------------------------OTHER METHODS-----------------------------------------
-	/*
+	/**
 	 * Randomly rearrange the order of the Cards in the collection 
 	 */
 	public void shuffle() {
@@ -85,7 +101,7 @@ public class DeckOfCards extends ArrayList<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Add a Card object to the deck or collection of Card objects 
 	 * 
 	 * @param card - Card object to add to collection 
@@ -95,7 +111,7 @@ public class DeckOfCards extends ArrayList<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Add a collection of Card objects to the deck 
 	 * 
 	 * @param cards - collection of Card objects to add to the collection 
@@ -105,7 +121,7 @@ public class DeckOfCards extends ArrayList<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Take the first Card object from the deck 
 	 * 
 	 * @return Card - first Card in the collection 
@@ -115,7 +131,7 @@ public class DeckOfCards extends ArrayList<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Take the first n number of Card objects from the deck 
 	 * 
 	 * @param n - number of Card objects to take from deck 
@@ -130,7 +146,7 @@ public class DeckOfCards extends ArrayList<Card>{
 	}
 	
 	
-	/*
+	/**
 	 * Split the deck into n number of piles 
 	 * 
 	 * @param n - number of piles the deck of Card objects should be split into 
@@ -177,7 +193,8 @@ public class DeckOfCards extends ArrayList<Card>{
 		return piles; 
 	}
 	
-	/*
+	
+	/**
 	 * Return information of the deckOfCards object in a clean format 
 	 * 
 	 * @return String - Every faceName and corresponding suit of each Card object 

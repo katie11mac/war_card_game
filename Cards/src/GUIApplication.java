@@ -14,8 +14,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+/**
+ * 
+ * Card game of war through JAVASwing. 
+ * 
+ * @author kmacalintal
+ *
+ */
+
 public class GUIApplication {
 
+	
+	
 	//-------GUI OBJECTS------
 	private JFrame frame;
 	private JButton drawButton; 
@@ -26,25 +36,20 @@ public class GUIApplication {
 	private JLabel playerCardImg; 
 	private JLabel computerCardImg;
 	
-	//---------TESTING----------
-//	public static Card card1 = new Card("9", "spades"); 
-//	public static Card card2 = new Card("ace", "clubs"); 
-//	public static Card card3 = new Card("King", "diamonds"); 
-//	public static Card card4 = new Card("9", "hearts"); 
-//	public static DeckOfCards deck;
-	//--------------------------
 	
 	//-----BACKEND OBJECTS------
 	public static DeckOfCards deck;
 	public static Queue<Card> computerPile; 
 	public static Queue<Card> playerPile; 
 
+	
 	//-------WAR VARIABLES------
-	// Used to help navigate war
+	// Used to help navigate and determine whether war needs to happen 
 	public static boolean war; 
 	ArrayList<Card> prize = new ArrayList<Card>(); 
 	
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -67,17 +72,17 @@ public class GUIApplication {
 	}
 
 	
-	/*
+	
+	/**
 	 * Set the game up for war (eg. shuffle and split the deck into two piles).
 	 * 
 	 */
 	public static void initializeGame() {
-		//TESTING----
-		//deck = new DeckOfCards(new ArrayList<>(Arrays.asList(card1, card2, card3, card4))); 
-		//----------
+
 		deck = new DeckOfCards(); 
 		war = false; 
 		deck.shuffle();
+		
 		System.out.println(deck); 
 		System.out.println("***DECK HAS BEEN SHUFFLED***"); 
 		
@@ -88,7 +93,9 @@ public class GUIApplication {
 		
 	}
 	
-	/*
+	
+	
+	/**
 	 * Compare the two cards drawn and communicate the results with the player. 
 	 * 
 	 * @param computerCard - Card object drawn from the top of the computer's pile 
@@ -96,10 +103,14 @@ public class GUIApplication {
 	 */
 	public void roundResults(Card computerCard, Card playerCard) {
 		
+		updateLabel.setText("ROUND RESULTS");
+		
+		// Display cards drawn by each player 
 		computerCardImg.setIcon(new ImageIcon(computerCard.getImage().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
 		playerCardImg.setIcon(new ImageIcon(playerCard.getImage().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
 		
-		updateLabel.setText("ROUND RESULTS");
+		
+		// Compare the cards and analyze it 
 		int compareResults = (computerCard.compareTo(playerCard)); 
 		
 		String results = "<html> Computer: " + computerCard + " <br/> You: " + playerCard + "<br/>"; 
@@ -124,7 +135,8 @@ public class GUIApplication {
 	}
 	
 	
-	/*
+	
+	/**
 	 * Game of War 
 	 * 
 	 * "If the cards are the same rank, it is War. 
@@ -151,18 +163,17 @@ public class GUIApplication {
 			System.out.println("There were not enough cards to play war. But here are the results..."); 
 			updateLabel.setText("There were not enough cards to play war. But here are the results..."); 
 			finalResults(); 
+			
 		} else {
 			
 			// Extra cards that have to be given up
 			prize.add(computerPile.remove()); 
 			prize.add(playerPile.remove()); 
 			
-			System.out.println("Each player has thrown their cards for war..."); 
 			
 			// Cards that will be compared 
 			Card computerCard = computerPile.remove(); 
 			computerCardImg.setIcon(new ImageIcon(computerCard.getImage().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
-			
 			Card playerCard = playerPile.remove(); 
 			playerCardImg.setIcon(new ImageIcon(playerCard.getImage().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
 
@@ -175,21 +186,19 @@ public class GUIApplication {
 			prize.add(computerCard); 
 			prize.add(playerCard); 
 			
-			System.out.print("Results: "); 
-			
 			System.out.println(prize); 
 			
-			if (compareResults == -1) { // computer has less card than player 
+			if (compareResults == -1) { // Computer drew card lower than Player 
 				playerPile.addAll(prize); 
 				results += "YOU WON THE WAR AND GET ALL THE CARDS DRAWN"; 
 				prize.clear();
 				war = false; 
-			} else if (compareResults == 1) {
+			} else if (compareResults == 1) { // Computer drew card higher than Player 
 				computerPile.addAll(prize); 
 				results += "COMPUTER WON THE WAR AND GETS ALL THE CARDS DRAWN"; 
 				prize.clear();
 				war = false; 
-			} else { // war 
+			} else { // Both players drew cards of the same rank; another round of war 
 				results += "WAR ... AGAIN";
 				war = true; 
 			}
@@ -200,12 +209,15 @@ public class GUIApplication {
 		
 	}
 	
-	/*
+	
+	
+	/**
 	 * Compare the size of the computer's and player's pile.
 	 * Communicate the results with the user. The bigger pile wins. 
 	 * 
 	 */
 	public void finalResults() {
+		
 		showBackOfDeck(); 
 		String results = "<html>"; 
 		
@@ -225,12 +237,21 @@ public class GUIApplication {
 		}
 	
 		resultsLabel.setText(results);
+		
 	}
 	
+	
+	
+	/**
+	 * Display the card on the back of the deck
+	 *
+	 */
 	public void showBackOfDeck() {
 		computerCardImg.setIcon(new ImageIcon(deck.getBackOfDeck().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
 		playerCardImg.setIcon(new ImageIcon(deck.getBackOfDeck().getScaledInstance(110, 170, Image.SCALE_SMOOTH))); 
 	}
+	
+	
 	
 	/**
 	 * Create the application.
@@ -239,10 +260,13 @@ public class GUIApplication {
 		initialize();
 	}
 
+	
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		
 		// -----------FRAME-----------
 		frame = new JFrame();
@@ -260,6 +284,7 @@ public class GUIApplication {
 			 */
 			public void actionPerformed(ActionEvent e) {
 	
+				showBackOfDeck(); 
 				updateLabel.setText("The game has been reset. Press Draw Card to being.");
 				resultsLabel.setText(""); 
 				initializeGame(); 
@@ -275,7 +300,7 @@ public class GUIApplication {
 		quitButton = new JButton("Quit");
 		quitButton.addActionListener(new ActionListener() {
 			/*
-			 * Quit the game currently being played and see the current results. 
+			 * Quit/Pause the game currently being played
 			 */
 			public void actionPerformed(ActionEvent e) {
 				showBackOfDeck(); 
@@ -285,7 +310,6 @@ public class GUIApplication {
 		});
 		quitButton.setBounds(6, 6, 117, 29);
 		frame.getContentPane().add(quitButton);
-		
 		
 		
 		
@@ -321,6 +345,7 @@ public class GUIApplication {
 		frame.getContentPane().add(drawButton);
 		
 		
+		
 		// ------- UPDATE LABEL ---------
 		updateLabel = new JLabel("");
 		updateLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -328,16 +353,22 @@ public class GUIApplication {
 		frame.getContentPane().add(updateLabel);
 
 		
+		
 		// ------- RESULTS LABEL -------
 		resultsLabel = new JLabel("", SwingConstants.CENTER);
 		resultsLabel.setBounds(149, 108, 304, 174);
 		frame.getContentPane().add(resultsLabel);
 		
-		// IMAGE 
+		
+		
+		// ------ PLAYER'S IMAGE -------
 		playerCardImg = new JLabel("Your Cards");
 		playerCardImg.setBounds(482, 108, 117, 174);
 		frame.getContentPane().add(playerCardImg);
 		
+		
+		
+		// ------ COMPUTER'S IMAGE -------
 		computerCardImg = new JLabel("Computer's Cards");
 		computerCardImg.setBounds(6, 108, 117, 174);
 		frame.getContentPane().add(computerCardImg);

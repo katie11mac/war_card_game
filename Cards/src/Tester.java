@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * File used for debugging and testing. 
+ * 
+ * @author kmacalintal
+ *
+ */
 public class Tester {
 
 	public static void main(String[] args) {
