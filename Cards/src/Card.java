@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.util.Arrays;
 
 
@@ -9,6 +10,7 @@ public class Card implements Comparable<Card>{
 	private String faceName; 
 	private String suit; 
 	private int ranking; 
+	private Image image; 
 	
 	
 	//------------------------------------CONSTRUCTORS-----------------------------------------
@@ -30,6 +32,7 @@ public class Card implements Comparable<Card>{
 		setFaceName(faceName); 
 		setSuit(suit); 
 		setRanking(); 
+		//need to add image 
 	}
 	
 	
@@ -65,7 +68,18 @@ public class Card implements Comparable<Card>{
 	}
 	
 	
-	
+	/*
+	 * Get Image of Card object 
+	 * 
+	 * @return Image - Image of Card 
+	 */
+	public Image getImage() {
+		return image;
+	}
+
+
+
+
 	//---------------------------------------SETTERS-------------------------------------------
 	/*
 	 * If the entry is valid, set the face of the Card object 
@@ -115,7 +129,14 @@ public class Card implements Comparable<Card>{
 			throw new IllegalArgumentException("Card is invalid because it does not have a ranking."); 
 	}
 	
-	
+	/*
+	 * Set the Image of the a Card object. 
+	 * 
+	 * @param image - Image object for Card
+	 */
+	public void setImage(Image image) {
+		this.image = image;
+	}
 	
 	//------------------------------------OTHER METHODS-----------------------------------------
 	/*

@@ -228,7 +228,7 @@ public class GUIApplication {
 		
 		// -----------FRAME-----------
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 605, 385);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -248,7 +248,7 @@ public class GUIApplication {
 				
 			}
 		});
-		restartButton.setBounds(165, 243, 117, 29);
+		restartButton.setBounds(252, 328, 117, 29);
 		frame.getContentPane().add(restartButton);
 		
 		
@@ -260,8 +260,8 @@ public class GUIApplication {
 			 * Quit the game currently being played and see the current results. 
 			 */
 			public void actionPerformed(ActionEvent e) {
-				updateLabel.setText("You quit the game. Please press Restart Game to play again. ");
-				finalResults(); 
+				updateLabel.setText("You quit the game.");
+				resultsLabel.setText("<html> Press Draw Card to continue game. <br/> Or press Restart Game to play a new game. </html>");
 			}
 		});
 		quitButton.setBounds(6, 6, 117, 29);
@@ -298,20 +298,20 @@ public class GUIApplication {
 				}
 			}
 		});
-		drawButton.setBounds(327, 6, 117, 29);
+		drawButton.setBounds(482, 6, 117, 29);
 		frame.getContentPane().add(drawButton);
 		
 		
 		// ------- UPDATE LABEL ---------
 		updateLabel = new JLabel("");
 		updateLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		updateLabel.setBounds(6, 54, 438, 25);
+		updateLabel.setBounds(85, 45, 438, 25);
 		frame.getContentPane().add(updateLabel);
 
 		
 		// ------- RESULTS LABEL -------
 		resultsLabel = new JLabel("Game Status", SwingConstants.CENTER);
-		resultsLabel.setBounds(6, 91, 438, 140);
+		resultsLabel.setBounds(160, 108, 304, 174);
 		frame.getContentPane().add(resultsLabel);
 				
 		
